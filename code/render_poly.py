@@ -13,8 +13,8 @@ def colour(n):
     if n == 5: return (0.30, 0.42, 0.78)
     if n == 6: return (0.78, 0.35, 0.72)
     if n >= 12:                                       # darker tones for 12 sides and more
-        return (0.15, 0.50, 0.50) if n % 2 else (0.78, 0.36, 0.12)
-    return (0.40, 0.72, 0.32) if n % 2 else (0.95, 0.58, 0.18)
+        return (0.15, 0.50, 0.50) if n % 2 else (0.80, 0.22, 0.72)   # teal / magenta
+    return (0.40, 0.72, 0.32) if n % 2 else (1.00, 0.55, 0.05)       # green / neon orange
 
 L = np.array([-0.35, 0.55, 0.76]); L /= np.linalg.norm(L)
 
