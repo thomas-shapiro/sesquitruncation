@@ -290,7 +290,8 @@ def poly4(k, name, az, el, dist=1.15, hide="big"):
             for a, b in E:
                 items.append((2e9, Z[[a, b], :2], "RED", 0))
         Xs = np.vstack([it[1] for it in items])
-        finish(tikz_faces(items, lw=0.0), Xs, name, width_cm=9)
+        lines, Xs = symy(tikz_faces(items, lw=0.0), Xs)
+        finish(lines, Xs, name, width_cm=9)
         return
     nseg = int(os.environ.get("ESEG", "1"))
     eps = float(os.environ.get("EEPS", "0")) * (Z[:, 2].max() - Z[:, 2].min())
@@ -299,7 +300,17 @@ def poly4(k, name, az, el, dist=1.15, hide="big"):
             p, q = Z[a] + (Z[b] - Z[a]) * j / nseg, Z[a] + (Z[b] - Z[a]) * (j + 1) / nseg
             items.append(((p[2] + q[2]) / 2 + 1e-6 + eps, np.array([p[:2], q[:2]]), None, elw))
     Xs = np.vstack([it[1] for it in items])
-    finish(tikz_faces(items, lw=0.2), Xs, name, width_cm=9)
+    lines, Xs = symy(tikz_faces(items, lw=0.2), Xs)
+    finish(lines, Xs, name, width_cm=9)
+
+
+def symy(lines, Xs):
+    """SYMY=1: make the picture's bounding box symmetric about y = 0, the centre of the
+    projection, so that two such pictures centred vertically have their centres level"""
+    if not os.environ.get("SYMY"):
+        return lines, Xs
+    M = np.abs(Xs[:, 1]).max(); x0 = Xs[:, 0].mean()
+    return lines + ["\\path (%.4f,%.4f) (%.4f,%.4f);" % (x0, M, x0, -M)], np.vstack([Xs, [[x0, M], [x0, -M]]])
 
 
 if __name__ == "__main__":
