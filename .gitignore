@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+gen2/
+gen3/
+gen2_filter
+gen3_filter
